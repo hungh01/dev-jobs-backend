@@ -5,10 +5,19 @@ import { SearchEngineService } from './search-engine.service';
 @Controller('search-engine')
 export class SearchEngineController {
     constructor(
-        private readonly searchEngineService: SearchEngineService, // Assuming you have a SearchEngineService
+        private readonly searchEngineService: SearchEngineService,
     ) { }
+
     @Get('search')
     async search(@Query() query: JobSearchRequest) {
-        return await this.searchEngineService.search(query.jobTitle, query.location);
+        const location = query.location || '';
+        const page = parseInt(query.page?.toString()) || 1;
+        const limit = parseInt(query.limit?.toString()) || 5;
+        return await this.searchEngineService.getJobs(
+            query.jobTitle,
+            location,
+            page,
+            limit
+        );
     }
 }

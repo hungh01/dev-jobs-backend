@@ -1,15 +1,19 @@
 
 import * as bcrypt from 'bcrypt';
-import { Injectable, InternalServerErrorException, UnprocessableEntityException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, InternalServerErrorException, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserRequest } from './dto/create-user.request';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Prisma } from '@prisma/client';
+import { AddJobsRequest } from '../job/dto/add-job.request';
+
 
 
 @Injectable()
 export class UsersService {
-    constructor(private readonly prismaService: PrismaService) { }
+    constructor(
+        private readonly prismaService: PrismaService,
+    ) { }
 
     async signup(data: CreateUserRequest) {
         try {
@@ -44,5 +48,4 @@ export class UsersService {
             where: filter,
         });
     }
-
 }

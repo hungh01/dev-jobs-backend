@@ -8,43 +8,32 @@ datasource db {
 }
 
 model User {
-  id           Int              @id @default(autoincrement())
-  name         String?
-  email        String?          @unique
-  password     String?
-  CV           String?
-  phone        String?
-  address      String?
-  city         String?
-  JobStatus    Boolean?
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-  applications JobApplication[]
-}
-
-model JobApplication {
   id        Int      @id @default(autoincrement())
-  userId    Int
-  jobId     Int
-  status    String   @default("pending")
+  name      String?
+  email     String?  @unique
+  password  String?
+  CV        String?
+  phone     String?
+  address   String?
+  city      String?
+  JobStatus Boolean?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  job       Job      @relation(fields: [jobId], references: [id])
+  jobs      Job[]
 }
 
 model Job {
-  id           Int              @id @default(autoincrement())
-  title        String
-  experience   Float?
-  description  String
-  requirements String
-  location     String
-  company      String
-  salary       Float?
-  type         String
-  expiredAt    DateTime
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-  applications JobApplication[]
+  id          Int      @id @default(autoincrement())
+  img         String?
+  title       String
+  companyName String
+  city        String
+  salary      String?
+  exp         String
+  url         String
+  userId      Int
+  expiredAt   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
 }

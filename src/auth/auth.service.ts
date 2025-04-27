@@ -51,4 +51,27 @@ export class AuthService {
     verifyToken(jwt: string) {
         this.jwtService.verify(jwt);
     }
+
+    getUserId(jwt: string): number {
+
+        if (!jwt) {
+            throw new UnauthorizedException('No token provided');
+        }
+
+        const cookies = jwt.split(';').reduce((acc, cookie) => {
+            const [key, value] = cookie.split('=').map(part => part.trim());
+            acc[key] = value;
+            return acc;
+        }, {} as Record<string, string>);
+
+        console.log('jwt', jwt);
+        console.log('authHeader', cookies['Authentication']);
+
+        try {
+            const payload = this.jwtService.verify<TokenPayload>(cookies['Authentication']);
+            return payload.userId;
+        } catch (error) {
+            throw new UnauthorizedException('Invalid token');
+        }
+    }
 }

@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post, UseGuards } from '@nestjs/common';
 import { CreateUserRequest } from './dto/create-user.request';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { AddJobsRequest } from '../job/dto/add-job.request';
 
 @Controller('users')
 export class UsersController {
@@ -19,5 +20,6 @@ export class UsersController {
     async getMe() {
         return { message: 'Hello from me' };
     }
+
 }
 

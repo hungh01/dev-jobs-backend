@@ -5,11 +5,25 @@ import { SearchEngineModule } from './search-engine/search-engine.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 import { PrismaModule } from './prisma/prisma.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-store';
+import { JobModule } from './job/job.module';
+
 
 @Module({
   imports: [
     LoggerModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule,
+        CacheModule.registerAsync({
+          useFactory: async () => ({
+            store: redisStore,
+            host: 'localhost',
+            port: 6379,
+            ttl: 60 * 60 * 24,
+          }),
+          isGlobal: true,
+        }),
+      ],
       useFactory: (configService: ConfigService) => {
         const isProduction = configService.get('NODE_ENV') === 'production';
 
@@ -30,7 +44,12 @@ import { PrismaModule } from './prisma/prisma.module';
       inject: [ConfigService], // <-- Đừng quên inject ConfigService
     }),
     ConfigModule.forRoot(),
-    UsersModule, AuthModule, SearchEngineModule, PrismaModule],
+    UsersModule,
+    AuthModule,
+    SearchEngineModule,
+    PrismaModule,
+    JobModule
+  ],
   controllers: [],
   providers: [],
 })
