@@ -64,9 +64,6 @@ export class AuthService {
             return acc;
         }, {} as Record<string, string>);
 
-        console.log('jwt', jwt);
-        console.log('authHeader', cookies['Authentication']);
-
         try {
             const payload = this.jwtService.verify<TokenPayload>(cookies['Authentication']);
             return payload.userId;

@@ -33,7 +33,7 @@ export class SearchEngineService {
         }
 
         const jobs = await this.search(keyword);
-        await this.cacheManager.set(keyword, jobs, 60 * 60 * 24); // TTL = 1h
+        await this.cacheManager.set(keyword, jobs, 60 * 60 * 24 * 7); // TTL = 1h
 
         const filteredJobs = location
             ? jobs.filter(job =>
