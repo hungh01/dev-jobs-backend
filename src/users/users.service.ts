@@ -2,9 +2,10 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable, InternalServerErrorException, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserRequest } from './dto/create-user.request';
-import { PrismaService } from 'src/prisma/prisma.service';
+
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { Prisma } from 'lib/prisma-client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 
 
